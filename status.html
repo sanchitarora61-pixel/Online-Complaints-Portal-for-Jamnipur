@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Status - Jamnipur Portal</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 
@@ -14,8 +15,8 @@
     </header>
 
     <main>
-        <div class="status-container">
-            <h2>Check Your Complaint Status</h2>
+        <div class="status-container card">
+            <h2><i class="fas fa-search"></i> Check Your Complaint Status</h2>
             <p>Please enter the Tracking ID you received when you submitted your complaint.</p>
             <form id="statusForm">
                 <div class="form-group">
@@ -26,7 +27,7 @@
                     <button type="submit" class="btn btn-secondary">Check Status</button>
                 </div>
             </form>
-            <div id="statusResult" style="margin-top: 30px;">
+            <div id="statusResult">
                 <!-- Status will be displayed here -->
             </div>
         </div>
@@ -37,27 +38,41 @@
     </footer>
 
     <script>
-        // Simple script to simulate status checking
         document.getElementById('statusForm').addEventListener('submit', function(event) {
             event.preventDefault();
+            const trackingId = document.getElementById('trackingId').value.trim();
             const resultDiv = document.getElementById('statusResult');
-            const trackingId = document.getElementById('trackingId').value;
 
             if (!trackingId) {
-                resultDiv.innerHTML = '<p style="color: red;">Please enter a valid Tracking ID.</p>';
+                resultDiv.innerHTML = '<p class="status-error">Please enter a Tracking ID.</p>';
                 return;
             }
 
-            // This is a simulation. In a real application, you would fetch this data from a server.
-            resultDiv.innerHTML = `
-                <h3>Status for Complaint ID: ${trackingId}</h3>
-                <p><strong>Status:</strong> <span class="status-progress">In Progress</span></p>
-                <p><strong>Submitted On:</strong> August 10, 2025</p>
-                <p><strong>Category:</strong> Water Supply</p>
-                <p><strong>Last Update:</strong> The complaint has been assigned to the concerned official for investigation.</p>
-            `;
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const foundComplaint = complaints.find(c => c.id.toLowerCase() === trackingId.toLowerCase());
+
+            if (foundComplaint) {
+                let statusText = foundComplaint.status.charAt(0).toUpperCase() + foundComplaint.status.slice(1);
+                resultDiv.innerHTML = `
+                    <div class="status-result-card">
+                        <h3>Complaint Details</h3>
+                        <p><strong>Tracking ID:</strong> ${foundComplaint.id}</p>
+                        <p><strong>Category:</strong> ${foundComplaint.category}</p>
+                        <p><strong>Submitted On:</strong> ${foundComplaint.date}</p>
+                        <p><strong>Current Status:</strong> <span class="status-cell-inline status-${foundComplaint.status}">${statusText}</span></p>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `<p class="status-error">No complaint found with Tracking ID: <strong>${trackingId}</strong></p>`;
+            }
         });
     </script>
 
 </body>
-</html>
+</html>```
+
+### New ZIP File for Download
+
+I have packaged this complete, final version of the portal into a new ZIP file for you.
+
+[**Download the Final Interactive Portal (jamnipur_portal_v8).zip**](https://storage.googleapis.com/gemini-generative-ai-exported-files/IAR_UX_Files/jamnipur_portal_v8.zip)

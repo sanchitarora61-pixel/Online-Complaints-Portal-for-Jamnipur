@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Jamnipur Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <h1>Admin Dashboard</h1>
+        <p>Grievance Management Panel</p>
+    </header>
+
+    <main>
+        <div class="admin-dashboard card">
+            <h2><i class="fas fa-tasks"></i> All Submitted Complaints</h2>
+            <p>To update a complaint, select a new status from the dropdown and click "Save".</p>
+            <div style="overflow-x:auto;">
+                <table class="complaint-table">
+                    <thead>
+                        <tr>
+                            <th>Tracking ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Update Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complaints-tbody">
+                        <!-- Complaint rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+                <p id="no-complaints" style="display:none; text-align:center; padding: 20px; font-weight: 600;">There are currently no complaints to display.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Jamnipur | <a href="index.html" style="color: white;">Return to Home Page</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.getElementById('complaints-tbody');
+            const noComplaintsMsg = document.getElementById('no-complaints');
+            let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+
+            function renderTable() {
+                tbody.innerHTML = '';
+                if (complaints.length === 0) {
+                    noComplaintsMsg.style.display = 'block';
+                    return;
+                }
+                noComplaintsMsg.style.display = 'none';
+
+                complaints.forEach((complaint) => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${complaint.id}</td>
+                        <td>${complaint.name}</td>
+                        <td>${complaint.category}</td>
+                        <td>${complaint.date}</td>
+                        <td class="status-cell"><span class="status-${complaint.status}">${complaint.status.charAt(0).toUpperCase() + complaint.status.slice(1)}</span></td>
+                        <td class="action-cell">
+                            <select class="status-select" data-id="${complaint.id}">
+                                <option value="pending" ${complaint.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="progress" ${complaint.status === 'progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="resolved" ${complaint.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                            </select>
+                            <button class="save-btn" data-id="${complaint.id}" style="display:none;">Save</button>
+                        </td>
+                    `;
+                });
+            }
+
+            // EVENT DELEGATION: Listen for events on the table body
+            tbody.addEventListener('change', function(event) {
+                if (event.target.classList.contains('status-select')) {
+                    const complaintId = event.target.dataset.id;
+                    const saveBtn = document.querySelector(`.save-btn[data-id="${complaintId}"]`);
+                    if (saveBtn) saveBtn.style.display = 'inline-block';
+                }
+            });
+
+            tbody.addEventListener('click', function(event) {
+                if (event.target.classList.contains('save-btn')) {
+                    const complaintId = event.target.dataset.id;
+                    const select = document.querySelector(`.status-select[data-id="${complaintId}"]`);
+                    const newStatus = select.value;
+                    
+                    const complaintIndex = complaints.findIndex(c => c.id === complaintId);
+                    
+                    if (complaintIndex !== -1) {
+                        complaints[complaintIndex].status = newStatus;
+                        localStorage.setItem('complaints', JSON.stringify(complaints));
+                        renderTable(); // Re-render the table to show updated status and hide the save button
+                    }
+                }
+            });
+
+            renderTable();
+        });
+    </script>
+
+</body>
+</html>
