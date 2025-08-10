@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Status - Jamnipur Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Online Complaints Portal</h1>
+        <p>Gram Panchayat Jamnipur, Vikasnagar, Dehradun</p>
+    </header>
+
+    <main>
+        <div class="status-container">
+            <h2>Check Your Complaint Status</h2>
+            <p>Please enter the Tracking ID you received when you submitted your complaint.</p>
+            <form id="statusForm">
+                <div class="form-group">
+                    <label for="trackingId">Enter Tracking ID</label>
+                    <input type="text" id="trackingId" name="trackingId" required>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn btn-secondary">Check Status</button>
+                </div>
+            </form>
+            <div id="statusResult" style="margin-top: 30px;">
+                <!-- Status will be displayed here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Jamnipur | Designed for the People</p>
+    </footer>
+
+    <script>
+        // Simple script to simulate status checking
+        document.getElementById('statusForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const resultDiv = document.getElementById('statusResult');
+            const trackingId = document.getElementById('trackingId').value;
+
+            if (!trackingId) {
+                resultDiv.innerHTML = '<p style="color: red;">Please enter a valid Tracking ID.</p>';
+                return;
+            }
+
+            // This is a simulation. In a real application, you would fetch this data from a server.
+            resultDiv.innerHTML = `
+                <h3>Status for Complaint ID: ${trackingId}</h3>
+                <p><strong>Status:</strong> <span class="status-progress">In Progress</span></p>
+                <p><strong>Submitted On:</strong> August 10, 2025</p>
+                <p><strong>Category:</strong> Water Supply</p>
+                <p><strong>Last Update:</strong> The complaint has been assigned to the concerned official for investigation.</p>
+            `;
+        });
+    </script>
+
+</body>
+</html>
