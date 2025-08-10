@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Jamnipur Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Admin Dashboard</h1>
+        <p>Gram Panchayat Jamnipur - Grievance Management</p>
+    </header>
+
+    <main>
+        <div class="admin-dashboard">
+            <h2>All Submitted Complaints</h2>
+            <p>Review, update, and resolve citizen grievances from this panel.</p>
+
+            <div style="overflow-x:auto;">
+                <table class="complaint-table">
+                    <thead>
+                        <tr>
+                            <th>Tracking ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Update Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sample Row 1 -->
+                        <tr>
+                            <td>JNP234567</td>
+                            <td>Ramesh Kumar</td>
+                            <td>Roads & Streetlights</td>
+                            <td>10-Aug-2025</td>
+                            <td class="status-cell"><span class="status-pending">Pending</span></td>
+                            <td>
+                                <select class="status-select">
+                                    <option value="pending" selected>Pending</option>
+                                    <option value="progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Sample Row 2 -->
+                        <tr>
+                            <td>JNP876543</td>
+                            <td>Sunita Devi</td>
+                            <td>Sanitation & Waste</td>
+                            <td>09-Aug-2025</td>
+                            <td class="status-cell"><span class="status-progress">In Progress</span></td>
+                            <td>
+                                <select class="status-select">
+                                    <option value="pending">Pending</option>
+                                    <option value="progress" selected>In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- Sample Row 3 -->
+                        <tr>
+                            <td>JNP456789</td>
+                            <td>Amit Singh</td>
+                            <td>Water Supply</td>
+                            <td>05-Aug-2025</td>
+                            <td class="status-cell"><span class="status-resolved">Resolved</span></td>
+                            <td>
+                                <select class="status-select">
+                                    <option value="pending">Pending</option>
+                                    <option value="progress">In Progress</option>
+                                    <option value="resolved" selected>Resolved</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Jamnipur | Admin Portal</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusSelects = document.querySelectorAll('.status-select');
+
+            statusSelects.forEach(select => {
+                select.addEventListener('change', function(event) {
+                    const selectedValue = event.target.value;
+                    const statusCell = event.target.closest('tr').querySelector('.status-cell');
+                    
+                    let statusText = '';
+                    let statusClass = '';
+
+                    switch (selectedValue) {
+                        case 'pending':
+                            statusText = 'Pending';
+                            statusClass = 'status-pending';
+                            break;
+                        case 'progress':
+                            statusText = 'In Progress';
+                            statusClass = 'status-progress';
+                            break;
+                        case 'resolved':
+                            statusText = 'Resolved';
+                            statusClass = 'status-resolved';
+                            break;
+                    }
+
+                    statusCell.innerHTML = `<span class="${statusClass}">${statusText}</span>`;
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
