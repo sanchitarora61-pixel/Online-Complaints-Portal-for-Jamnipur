@@ -1,0 +1,76 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Define Color Palette */
+:root {
+    --primary-color: #0d47a1; --secondary-color: #1976d2; --accent-color: #ff6f00; --success-color: #28a745;
+    --light-gray: #f8f9fa; --dark-gray: #343a40; --text-color: #495057; --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* General Body Styles */
+body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--light-gray); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
+
+/* Header Styles */
+header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 25px 20px; text-align: center; position: relative; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+header h1 { margin: 0; font-size: 2.2em; font-weight: 700; }
+header p { margin: 5px 0 0; font-size: 1.1em; font-weight: 300; opacity: 0.9; }
+
+/* Admin Login Link in Header */
+.header-admin-link {
+    position: absolute; top: 50%; right: 20px; transform: translateY(-50%); color: white; background-color: rgba(255, 255, 255, 0.1); padding: 8px 16px;
+    border-radius: 50px; text-decoration: none; font-weight: 600; border: 1px solid transparent; transition: all 0.3s ease;
+}
+.header-admin-link:hover { background-color: white; color: var(--primary-color); }
+.header-admin-link i { margin-right: 8px; }
+
+/* Main Content & Card Styles */
+main { flex: 1; padding: 20px; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+.card { background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: var(--card-shadow); }
+h2 { color: var(--primary-color); border-bottom: 2px solid #e9ecef; padding-bottom: 15px; margin-top: 0; font-weight: 600; font-size: 1.5em; }
+h2 i { margin-right: 12px; }
+
+/* General Button Styles */
+.button-container { text-align: center; margin-top: 30px; }
+.btn {
+    display: inline-block; background-color: var(--accent-color); color: white; padding: 15px 35px; text-decoration: none; border-radius: 50px;
+    font-size: 1.1em; font-weight: 600; margin: 10px; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 111, 0, 0.4);
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 7px 20px rgba(255, 111, 0, 0.6); }
+.btn-secondary { background-color: var(--secondary-color); box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4); }
+
+/* Form Styles */
+.form-group { margin-bottom: 25px; }
+.form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: var(--dark-gray); }
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; font-family: 'Poppins', sans-serif;
+}
+
+/* Status Check Page Result Styles */
+#statusResult { margin-top: 30px; }
+.status-result-card { border-left: 5px solid var(--primary-color); background-color: #ffffff; padding: 25px; border-radius: 8px; }
+.status-result-card h3 { margin-top: 0; color: var(--primary-color); }
+.status-result-card p { margin: 10px 0; font-size: 1.1em; line-height: 1.6; }
+.status-error { color: #d93025; font-weight: 600; text-align: center; }
+
+/* Status Badges */
+.status-cell-inline, .status-cell span { padding: 5px 12px; border-radius: 50px; color: white; font-weight: 600; font-size: 0.9em; }
+.status-pending { background-color: #ffc107; }
+.status-progress { background-color: #17a2b8; }
+.status-resolved { background-color: var(--success-color); }
+
+/* Footer Styles */
+footer { background-color: var(--dark-gray); color: var(--light-gray); text-align: center; padding: 25px; margin-top: auto; }
+
+/* --- MOBILE RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    header { padding: 20px; }
+    header h1 { font-size: 1.8em; }
+    .header-admin-link { position: static; transform: none; display: inline-block; margin-top: 15px; }
+    .card { padding: 20px; }
+    .btn { font-size: 1em; padding: 14px 28px; }
+}
+
+@media (max-width: 600px) {
+    main { padding: 15px; }
+    .btn { width: 100%; margin-left: 0; margin-right: 0; }
+}

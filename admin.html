@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Jamnipur Portal</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body class="dashboard">
+    <div class="dashboard-wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header"><h3>Admin Panel</h3></div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i><span>&nbsp;Dashboard</span></a></li>
+                <li><a href="index.html"><i class="fas fa-sign-out-alt"></i><span>&nbsp;Logout</span></a></li>
+            </ul>
+        </nav>
+        <div class="main-content">
+            <main class="dashboard-main">
+                <section class="summary-cards">
+                    <div class="summary-card total"><div class="icon"><i class="fas fa-list-ul"></i></div><div class="info"><h4 id="total-count">0</h4><p>Total</p></div></div>
+                    <div class="summary-card pending"><div class="icon"><i class="fas fa-clock"></i></div><div class="info"><h4 id="pending-count">0</h4><p>Pending</p></div></div>
+                    <div class="summary-card progress"><div class="icon"><i class="fas fa-spinner"></i></div><div class="info"><h4 id="progress-count">0</h4><p>In Progress</p></div></div>
+                    <div class="summary-card resolved"><div class="icon"><i class="fas fa-check-circle"></i></div><div class="info"><h4 id="resolved-count">0</h4><p>Resolved</p></div></div>
+                </section>
+                <section class="complaints-container">
+                    <div class="complaints-header">
+                        <h3>All Grievances</h3>
+                        <button id="export-btn" class="btn"><i class="fas fa-file-excel"></i>&nbsp;Export</button>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="complaint-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>Address</th><th>Category</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+                            <tbody id="complaints-tbody"></tbody>
+                        </table>
+                        <p id="no-complaints" style="display:none; text-align:center; padding:20px; font-weight:600;">No complaints yet.</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.getElementById('complaints-tbody');
+            const noComplaintsMsg = document.getElementById('no-complaints');
+            let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+
+            function updateSummary() {
+                document.getElementById('total-count').textContent = complaints.length;
+                document.getElementById('pending-count').textContent = complaints.filter(c => c.status === 'pending').length;
+                document.getElementById('progress-count').textContent = complaints.filter(c => c.status === 'progress').length;
+                document.getElementById('resolved-count').textContent = complaints.filter(c => c.status === 'resolved').length;
+            }
+
+            function renderTable() {
+                tbody.innerHTML = '';
+                noComplaintsMsg.style.display = complaints.length === 0 ? 'block' : 'none';
+                complaints.forEach((c) => {
+                    const row = tbody.insertRow();
+                    const statusText = c.status.charAt(0).toUpperCase() + c.status.slice(1);
+                    row.innerHTML = `
+                        <td>${c.id}</td><td>${c.name}</td><td>${c.mobile||'N/A'}</td><td>${c.address||'N/A'}</td><td>${c.category}</td><td>${c.date}</td>
+                        <td class="status-cell"><span class="status-${c.status}">${statusText}</span></td>
+                        <td class="action-cell">
+                            <select class="status-select" data-id="${c.id}"><option value="pending" ${c.status==='pending'?'selected':''}>Pending</option><option value="progress" ${c.status==='progress'?'selected':''}>In Progress</option><option value="resolved" ${c.status==='resolved'?'selected':''}>Resolved</option></select>
+                            <button class="save-btn" data-id="${c.id}" style="display:none;">Save</button>
+                        </td>`;
+                });
+                updateSummary();
+            }
+
+            tbody.addEventListener('change', e => { if (e.target.classList.contains('status-select')) document.querySelector(`.save-btn[data-id="${e.target.dataset.id}"]`).style.display = 'inline-block'; });
+            tbody.addEventListener('click', e => {
+                if (e.target.classList.contains('save-btn')) {
+                    const id = e.target.dataset.id;
+                    const status = document.querySelector(`.status-select[data-id="${id}"]`).value;
+                    const index = complaints.findIndex(c => c.id === id);
+                    if (index !== -1) { complaints[index].status = status; localStorage.setItem('complaints', JSON.stringify(complaints)); renderTable(); }
+                }
+            });
+
+            document.getElementById('export-btn').addEventListener('click', () => {
+                const data = complaints.map(c => ({ ID:c.id, Name:c.name, Mobile:c.mobile, Address:c.address, Category:c.category, Description:c.description, Date:c.date, Status:c.status }));
+                const ws = XLSX.utils.json_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Complaints");
+                XLSX.writeFile(wb, "Jamnipur_Complaints_Report.xlsx");
+            });
+
+            renderTable();
+        });
+    </script>
+</body>
+</html>
