@@ -58,9 +58,9 @@ main {
 /* Home page grid layout */
 .home-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 0.5fr 0.5fr;
     gap: 35px;
-    align-items: center; /* Center vertically */
+    align-items: right; /* Center vertically */
 }
 
 .card {
