@@ -65,13 +65,14 @@ footer { background-color: var(--dark-gray); color: var(--light-gray); text-alig
 @media (max-width: 720px) {
     header { padding: 16px; }
     header h1 { font-size: 1.8em; }
-    .header-admin-link { position: static; transform: none; display: inline-block; margin-top: 15px; }
-    .card { padding: 15px; }
-    .btn { font-size: 1em; padding: 14px 25px; }
+    .header-admin-link { position: static; transform: none; display: inline-block; margin-top: 10px; }
+    .card { padding: 10px; }
+    .btn { font-size: 1em; padding: 10px 15px; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
     main { padding: 15px; }
     .btn { width: 100%; margin-left: 0; margin-right: 0; }
 
 }
+
