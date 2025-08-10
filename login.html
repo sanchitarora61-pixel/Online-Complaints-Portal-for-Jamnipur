@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Jamnipur Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Authentication</h1>
+        <p>Gram Panchayat Jamnipur</p>
+    </header>
+    <main>
+        <div id="login-container" class="card">
+            <h2><i class="fas fa-lock"></i> Secure Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter 'admin'">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter 'password123'">
+                </div>
+                <p id="error-message" style="display:none;">Invalid username or password.</p>
+                <div class="button-container">
+                    <button type="submit" class="btn admin-login-btn">Login</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Jamnipur | Public Grievance Portal</p>
+    </footer>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password123') {
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>```
+
+#### **5. `submit.html` (Submit Complaint Page)**
+*No major changes.*
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint - Jamnipur Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Online Complaints Portal</h1>
+        <p>Gram Panchayat Jamnipur, Vikasnagar, Dehradun</p>
+    </header>
+    <main>
+        <div class="form-container card">
+            <div id="submissionSuccess" style="display:none; text-align: center;">
+                <h2><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Thank You!</h2>
+                <p>Your complaint has been registered. Please save your Tracking ID.</p>
+                <p style="font-size: 1.2em; font-weight: 600;">Your Tracking ID is: <strong id="trackingIdDisplay" style="color: var(--accent-color);"></strong></p>
+                <div class="button-container">
+                    <a href="index.html" class="btn btn-secondary">Back to Home Page</a>
+                </div>
+            </div>
+            <form id="complaintForm">
+                <h2><i class="fas fa-edit"></i> New Complaint Registration Form</h2>
+                <div class="form-group"><label for="fullName">Full Name</label><input type="text" id="fullName" required></div>
+                <div class="form-group"><label for="category">Complaint Category</label>
+                    <select id="category" required>
+                        <option value="">-- Please Select --</option>
+                        <option value="Water Supply">Water Supply</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Sanitation & Waste">Sanitation & Waste</option>
+                        <option value="Roads & Streetlights">Roads & Streetlights</option>
+                        <option value="Ration System">Ration System</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group"><label for="description">Detailed Description</label><textarea id="description" rows="5" required></textarea></div>
+                <div class="button-container"><button type="submit" class="btn">Submit Complaint</button></div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Jamnipur | Designed for the People</p>
+    </footer>
+    <script>
+        document.getElementById('complaintForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const trackingId = "JNP" + Date.now().toString().slice(-6);
+            const complaint = {
+                id: trackingId,
+                name: document.getElementById('fullName').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                date: new Date().toLocaleDateString('en-GB'),
+                status: 'pending'
+            };
+            let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            complaints.push(complaint);
+            localStorage.setItem('complaints', JSON.stringify(complaints));
+
+            document.getElementById('trackingIdDisplay').textContent = trackingId;
+            document.getElementById('complaintForm').style.display = 'none';
+            document.getElementById('submissionSuccess').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint - Jamnipur Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <h1>Online Complaints Portal</h1>
+        <p>Gram Panchayat Jamnipur, Vikasnagar, Dehradun</p>
+    </header>
+
+    <main>
+        <div class="form-container card">
+            <!-- Success Message -->
+            <div id="submissionSuccess" style="display:none; text-align: center;">
+                <h2><i class="fas fa-check-circle" style="color: var(--success-color); font-size: 1.5em;"></i> Thank You!</h2>
+                <p>Your complaint has been registered successfully. Please save your Tracking ID.</p>
+                <div id="trackingIdDisplay" style="font-weight: 700; font-size: 1.4em; color: var(--accent-color); background-color: var(--light-gray); padding: 10px 20px; border-radius: 8px; display: inline-block; margin: 15px 0; border: 1px solid #ccc;"></div>
+                <div class="button-container">
+                    <a href="index.html" class="btn btn-secondary">Back to Home Page</a>
+                </div>
+            </div>
+
+            <!-- Complaint Form -->
+            <form id="complaintForm">
+                <h2><i class="fas fa-edit"></i> New Complaint Registration Form</h2>
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" placeholder="Enter 10-digit mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Full Address</label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">Complaint Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">-- Please Select --</option>
+                        <option value="Water Supply">Water Supply</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Sanitation & Waste">Sanitation & Waste</option>
+                        <option value="Roads & Streetlights">Roads & Streetlights</option>
+                        <option value="Ration System">Ration System</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Detailed Description of the Complaint</label>
+                    <textarea id="description" name="description" rows="5" required></textarea>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn">Submit Complaint</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Jamnipur | Designed for the People</p>
+    </footer>
+
+    <script>
+        document.getElementById('complaintForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const trackingId = "JNP" + Date.now().toString().slice(-6);
+            
+            const complaint = {
+                id: trackingId,
+                name: document.getElementById('fullName').value,
+                mobile: document.getElementById('mobile').value,
+                address: document.getElementById('address').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                date: new Date().toLocaleDateString('en-GB'),
+                status: 'pending'
+            };
+
+            let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            complaints.push(complaint);
+            localStorage.setItem('complaints', JSON.stringify(complaints));
+
+            document.getElementById('trackingIdDisplay').textContent = trackingId;
+            document.getElementById('complaintForm').style.display = 'none';
+            document.getElementById('submissionSuccess').style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
